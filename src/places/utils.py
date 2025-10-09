@@ -1,6 +1,7 @@
+import httpx
 import requests
 import pandas as pd 
-from config import API_ENDPOINTS, DATA_DICTIONARY_ENDPOINT
+from places.config import API_ENDPOINTS, DATA_DICTIONARY_ENDPOINT
 
 def get_release_for_year(measureid, year):
     """
@@ -79,3 +80,27 @@ def set_query_params(geo, year, measureid=None, datavaluetypeid=None, loc=None):
         params["locationname"] = loc
 
     return url, params
+
+async def query_api(url, params=None):
+    """
+    Queries the CDC Places API with the given URL and parameters.
+
+    Args:
+        url (str): The API endpoint URL.
+        params (dict, optional): A dictionary of query parameters to include in the request.
+
+    Returns:
+        dict: The JSON response from the API if the request is successful.
+        None: If the request fails or an error occurs.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            # Ensure params is a dict and set the $limit parameter to 100000
+            if params is None:
+                params = {}
+            params["$limit"] = 100000
+            response = await client.get(url, params=params, timeout=30.0)
+            response.raise_for_status()  # Raise an error for bad responses
+            return response.json()
+        except Exception:
+            return None
