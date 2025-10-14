@@ -71,35 +71,6 @@ def get_endpoint(params: PlacesParams):
         return None
     return get_endpoint_for_geo(params.geo.geo_type.value, release_name)
 
-def set_query_params(geo, year, measureid=None, datavaluetypeid=None, loc=None):
-    """
-    Selects the corresponding API endpoint based on geography level and year and sets query parameters.
-    
-    Args:
-        geo (str): The geographic level (e.g., 'county', 'census', 'zcta', 'places').
-        year (int): The year of the data release.
-        measureid (str, optional): The measure ID to filter by.
-        datavaluetypeid (str, optional): The data value type ID to filter by.
-        loc (str, optional): The location name to filter by.
-
-    Returns:
-        tuple: A tuple containing the API endpoint URL and a dictionary of query parameters.
-    """
-    
-    # get the API endpoint for the specified geographic level and year
-    url = get_endpoint_for_geo(geo, get_release_for_year(measureid, year))
-
-    # initialize an empty dictionary for parameters
-    params = {}
-    if measureid:
-        params["measureid"] = measureid
-    if datavaluetypeid:
-        params["datavaluetypeid"] = datavaluetypeid
-    if loc:
-        params["locationname"] = loc
-
-    return url, params
-
 async def query_api(url, search_params: PlacesParams):
     """
     Queries the CDC Places API with the given URL and parameters.
