@@ -2,6 +2,7 @@ import httpx
 import requests
 import pandas as pd 
 from places.config import API_ENDPOINTS, DATA_DICTIONARY_ENDPOINT
+from places.models import PlacesParams
 
 def get_release_for_year(measureid, year):
     """
@@ -27,6 +28,9 @@ def get_release_for_year(measureid, year):
         return None
     row = dataDict[dataDict['measureid'] == measureid]
 
+    # save row to csv 
+    row.to_csv(f"tests/{measureid}_data_dict.csv", index=False)
+
     # return the column name that matches the year
     if row.empty:
         print(f"No data found for measure ID: {measureid}")
@@ -51,6 +55,21 @@ def get_endpoint_for_geo(geo, release_name):
         print(f"Data release '{release_name}' is not available for geographic level '{geo}'.")
         return None
     return API_ENDPOINTS[geo][release_name]
+
+def get_endpoint(params: PlacesParams):
+    """
+    Retrieves the API endpoint based on the geographic level and year from PlacesParams.
+
+    Args:
+        params (PlacesParams): An instance of PlacesParams containing geo and year attributes.
+
+    Returns:
+        str: The API endpoint URL for the specified geographic level and year.
+    """
+    release_name = get_release_for_year(params.measureid.measure_id.value, params.year)
+    if not release_name:
+        return None
+    return get_endpoint_for_geo(params.geo.geo_type.value, release_name)
 
 def set_query_params(geo, year, measureid=None, datavaluetypeid=None, loc=None):
     """
@@ -81,7 +100,7 @@ def set_query_params(geo, year, measureid=None, datavaluetypeid=None, loc=None):
 
     return url, params
 
-async def query_api(url, params=None):
+async def query_api(url, search_params: PlacesParams):
     """
     Queries the CDC Places API with the given URL and parameters.
 
@@ -95,6 +114,8 @@ async def query_api(url, params=None):
     """
     async with httpx.AsyncClient() as client:
         try:
+            params = search_params.to_api_params()
+            
             # Ensure params is a dict and set the $limit parameter to 100000
             if params is None:
                 params = {}

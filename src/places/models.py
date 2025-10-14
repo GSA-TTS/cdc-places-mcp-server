@@ -232,9 +232,36 @@ class DataValueTypeID(BaseModel):
         return descriptions[self.datavaluetype_id]
 
 class PlacesParams(BaseModel):
-    state: StateCode = Field(..., description="The two-letter state code (e.g., 'CA' for California).")
-    year: int = Field(..., description="The year of the data release (e.g., 2024).")
+    state: Optional[StateCode] = Field(None, description="The two-letter state code (e.g., 'CA' for California).")
+    year: str = Field(..., description="The year of the data release (e.g., 2024).")
     measureid: MeasureID = Field(..., description="The health measure identifier.")
     geo: GeoType = Field(..., description="The geographic breakdown type.")
     datavaluetypeid: DataValueTypeID = Field(..., description="The data value type identifier.")
     locationname: Optional[Union[str, List[str]]] = Field(None, description="The name of the location (e.g., county name). Can be a single string or a list of strings.")
+
+    def to_api_params(self):
+        """Convert the PlacesParams instance to a dictionary of API parameters."""
+
+        params = {
+            "measureid": self.measureid.measure_id.value,
+            "datavaluetypeid": self.datavaluetypeid.datavaluetype_id.value,
+        }
+        if self.locationname:
+            if isinstance(self.locationname, list):
+                params["locationname"] = ",".join(self.locationname)
+            else:
+                params["locationname"] = self.locationname
+        
+        # set parameters to be returned based off geography
+        GEO = self.geo.geo_type.value
+        if GEO == 'county':
+            params["$select"] = 'stateabbr,statedesc,locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+        elif GEO == 'census': 
+            params["$select"] = 'stateabbr,statedesc,countyname,locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+        elif GEO == 'zcta':
+            params["$select"] = 'locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+        elif GEO == 'places':
+            params["$select"] = 'stateabbr,statedesc,locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+
+        return params
+
