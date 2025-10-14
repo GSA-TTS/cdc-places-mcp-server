@@ -3,11 +3,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "cdc-places-mcp-server"
+name = "places"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.9.4",
