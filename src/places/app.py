@@ -3,7 +3,7 @@ from places.tools import register_tools
 from starlette.responses import JSONResponse
 
 # Initialize FastMCP server
-mcp = FastMCP("cdc-places",stateless_http=True)
+mcp = FastMCP("places",stateless_http=True)
 
 register_tools(mcp)
 

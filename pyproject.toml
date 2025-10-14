@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "httpx>=0.28.1",
-    "mcp[cli]>=1.9.4",
+    "mcp[cli]>=1.12.1",
     "requests>=2.32.4",
     "numpy>=2.0.0,<2.3.0",
     "pandas>=2.3.3",
