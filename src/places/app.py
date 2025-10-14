@@ -1,4 +1,4 @@
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 from places.tools import register_tools
 from starlette.responses import JSONResponse
 
