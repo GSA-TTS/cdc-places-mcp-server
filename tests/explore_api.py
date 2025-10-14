@@ -12,10 +12,11 @@ def get_places_data():
 
     # set parameters for test query 
     params = PlacesParams(
-        geo=GeoType(geo_type=GeoTypeEnum("zcta")), 
-        year="2022",
-        measureid=MeasureID(measure_id=MeasureIDEnum("DENTAL")),
+        geo=GeoType(geo_type=GeoTypeEnum("county")), 
+        year="2018",
+        measureid=MeasureID(measure_id=MeasureIDEnum("SLEEP")),
         datavaluetypeid=DataValueTypeID(datavaluetype_id=DataValueTypeIDEnum("CrdPrv")),
+        locationname='Worcester',
     )
 
     # get endpoint and convert query parameters 

@@ -232,7 +232,6 @@ class DataValueTypeID(BaseModel):
         return descriptions[self.datavaluetype_id]
 
 class PlacesParams(BaseModel):
-    state: Optional[StateCode] = Field(None, description="The two-letter state code (e.g., 'CA' for California).")
     year: str = Field(..., description="The year of the data release (e.g., 2024).")
     measureid: MeasureID = Field(..., description="The health measure identifier.")
     geo: GeoType = Field(..., description="The geographic breakdown type.")
