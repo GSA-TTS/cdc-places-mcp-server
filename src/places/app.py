@@ -3,8 +3,8 @@ from places.tools import register_tools
 from starlette.responses import JSONResponse
 
 # Initialize FastMCP server
-mcp = FastMCP("places",stateless_http=True)
-# mcp = FastMCP("places")
+# mcp = FastMCP("places",stateless_http=True)
+mcp = FastMCP("places")
 
 register_tools(mcp)
 
@@ -14,7 +14,7 @@ async def health_check(request):
     return JSONResponse({"status": "healthy", "service": "mcp-server"})
 
 # Create ASGI app for deployment
-app = mcp.http_app()
+app = mcp.http_app(stateless_http=True)
 
 # for local testing 
 # if __name__ == "__main__":
