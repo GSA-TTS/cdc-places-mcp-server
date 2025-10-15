@@ -4,7 +4,7 @@ from places.models import PlacesParams
 def register_tools(mcp):
 
     @mcp.tool()
-    async def get_cdc_places_data(search_params: PlacesParams) -> str:
+    async def get_cdc_places_data(search_params: PlacesParams):
         """Fetch data from the CDC PLACES API for a given measure, geographic breakdown, and year.
         
         Args:

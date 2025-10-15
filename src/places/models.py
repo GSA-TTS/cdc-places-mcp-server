@@ -236,7 +236,7 @@ class PlacesParams(BaseModel):
     measureid: MeasureID = Field(..., description="The health measure identifier.")
     geo: GeoType = Field(..., description="The geographic breakdown type.")
     datavaluetypeid: DataValueTypeID = Field(..., description="The data value type identifier.")
-    locationname: Optional[Union[str, List[str]]] = Field(None, description="The name of the location (e.g., county name). Can be a single string or a list of strings.")
+    locationname: Optional[List[str]] = Field(None, description="The name of the location (e.g., county name). Phrase as just the county name (e.g. 'Worcester', not 'Worcester County'). Can be a single string or a list of strings.")
 
     def to_api_params(self):
         """Convert the PlacesParams instance to a dictionary of API parameters."""
@@ -246,10 +246,7 @@ class PlacesParams(BaseModel):
             "datavaluetypeid": self.datavaluetypeid.datavaluetype_id.value,
         }
         if self.locationname:
-            if isinstance(self.locationname, list):
-                params["locationname"] = ",".join(self.locationname)
-            else:
-                params["locationname"] = self.locationname
+            params["locationname"] = self.locationname
         
         # set parameters to be returned based off geography
         GEO = self.geo.geo_type.value

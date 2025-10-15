@@ -28,9 +28,6 @@ def get_release_for_year(measureid, year):
         return None
     row = dataDict[dataDict['measureid'] == measureid]
 
-    # save row to csv 
-    row.to_csv(f"tests/{measureid}_data_dict.csv", index=False)
-
     # return the column name that matches the year
     if row.empty:
         print(f"No data found for measure ID: {measureid}")
