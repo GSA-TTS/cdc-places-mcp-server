@@ -13,9 +13,9 @@ async def health_check(request):
     return JSONResponse({"status": "healthy", "service": "mcp-server"})
 
 # Create ASGI app for deployment
-# app = mcp.http_app()
+app = mcp.http_app()
 
 # for local testing 
-if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+# if __name__ == "__main__":
+#     # Initialize and run the server
+#     mcp.run(transport='stdio')
