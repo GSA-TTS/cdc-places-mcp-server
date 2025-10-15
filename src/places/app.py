@@ -3,8 +3,8 @@ from places.tools import register_tools
 from starlette.responses import JSONResponse
 
 # Initialize FastMCP server
-# mcp = FastMCP("places",stateless_http=True)
-mcp = FastMCP("places")
+mcp = FastMCP("places",stateless_http=True)
+# mcp = FastMCP("places")
 
 register_tools(mcp)
 
