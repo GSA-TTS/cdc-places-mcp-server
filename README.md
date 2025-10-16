@@ -1,4 +1,6 @@
-## Pilot MCP Server for the CDC PLACES Dataset
+## MCP Server for the CDC PLACES Dataset
+
+⚠️ DISCLAIMER: This is a proof of concept and is not intended for production use.
 
 A Model Context Protocol (MCP) server that provides access to the CDC PLACES dataset for health statistics and outcomes data across US geographic areas.
 
