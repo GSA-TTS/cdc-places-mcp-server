@@ -1,0 +1,16 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.GSA-TTS/cdc-places-mcp-server",
+  "description": "An MCP server that provides access to the CDC PLACES database.",
+  "repository": {
+    "url": "https://github.com/GSA-TTS/cdc-places-mcp-server",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://cdc-places-mcp-server-bright-hartebeest-nc.app.cloud.gov/mcp"
+    }
+  ]
+}
