@@ -8,15 +8,15 @@ from places.utils import get_endpoint
 from test_utils import query_api
 import pandas as pd 
 
-def get_places_data():
+def get_places_data(geo, year, measureid, datavaluetypeid, locationname):
 
     # set parameters for test query 
     params = PlacesParams(
-        geo=GeoType(geo_type=GeoTypeEnum("county")), 
-        year="2018",
-        measureid=MeasureID(measure_id=MeasureIDEnum("SLEEP")),
-        datavaluetypeid=DataValueTypeID(datavaluetype_id=DataValueTypeIDEnum("CrdPrv")),
-        locationname='Worcester',
+        geo=GeoType(geo_type=GeoTypeEnum(geo)), 
+        year=year,
+        measureid=MeasureID(measure_id=MeasureIDEnum(measureid)),
+        datavaluetypeid=DataValueTypeID(datavaluetype_id=DataValueTypeIDEnum(datavaluetypeid)),
+        locationname=locationname,
     )
 
     # get endpoint and convert query parameters 

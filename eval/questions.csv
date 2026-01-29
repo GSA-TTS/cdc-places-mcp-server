@@ -1,0 +1,11 @@
+question,expected_answer,eval_type
+"What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",36.9,numeric
+"what percent of adults had colorectal cancer screening in census tract 48005000302 in 2020?",66.0,numeric
+"what percent of adults had a mobility disability in the 04401 zip code in 2021?",12.5,numeric
+"what percent of adults had a lack of social support in West Lafayette, IN in 2022?",Crude: 26.5%; Age-adjusted: 22.3%,llm_judge
+"did West Lafayette, IN or West Lafayette, OH have a higher rate of people who received food stamps in 2022?","West Lafayette, OH",string
+"which year between 2018 and 2022 did Nassau, NY have the lowest rate of adults without health insurance?", 2022,string
+"did the 50636 zip code have a higher rate of adults with physical distress or mental distress in 2019?", "physical distress",string
+"which county in Arkansas had the highest rate of dental visits in 2022?", "Benton County", string
+"what is the average rate of adults with cancer for all census tracts in Davidson, NC in 2018?", 7.3,numeric
+"what is the interquartile range of physical inactivity among all places in Vermont in 2022?", 4,numeric

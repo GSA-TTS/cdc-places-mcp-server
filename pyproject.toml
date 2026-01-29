@@ -17,6 +17,7 @@ dependencies = [
     "fastmcp>=2.12.4",
     "starlette>=0.48.0",
     "pydantic==2.11.7",
+    "mcp-data-check>=0.3.0",
 ]
 
 [tool.setuptools]
