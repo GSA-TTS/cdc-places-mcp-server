@@ -238,6 +238,10 @@ class PlacesParams(BaseModel):
     datavaluetypeid: DataValueTypeID = Field(..., description="The data value type identifier.")
     locationname: Optional[List[str]] = Field(None, description="The name of the location (e.g., county name). Phrase as just the county name (e.g. 'Worcester', not 'Worcester County'). Can be a single string or a list of strings.")
 
+    model_config = {
+        'extra':'forbid'
+    }
+
     def to_api_params(self):
         """Convert the PlacesParams instance to a dictionary of API parameters."""
 
