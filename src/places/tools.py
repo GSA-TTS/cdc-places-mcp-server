@@ -8,7 +8,7 @@ def register_tools(mcp):
         """Fetch data from the CDC PLACES API for a given measure, geographic breakdown, and year.
         
         Args:
-            search_params (PlacesParams): An instance of PlacesParams containing geo, year, measureid, datavaluetypeid, and loc attributes.
+            search_params (PlacesParams): An instance of PlacesParams containing geo, year, measureid, datavaluetypeid, and locationname attributes.
         Returns:
             dict: API response containing CDC Places data
         """
