@@ -11,6 +11,16 @@ def register_tools(mcp):
             search_params (PlacesParams): An instance of PlacesParams containing geo, year, measureid, datavaluetypeid, and locationname attributes.
         Returns:
             dict: API response containing CDC Places data
+
+
+        Example of valid parameters in a query for smoking rates amongst adults in Wayne County in 2020: 
+            {"search_params":{
+                "geo":{"geo_type":"county"},
+                "year":"2020",
+                "measureid":{"measure_id":"CSMOKING"},
+                "datavaluetypeid":{"datavaluetype_id":"CrdPrv"}}, 
+                "locationname":{"locationname":"Wayne"}
+            }
         """
         # construct the URL for the API query
         url = get_endpoint(search_params)
