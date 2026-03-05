@@ -236,7 +236,7 @@ class PlacesParams(BaseModel):
     measureid: MeasureID = Field(..., description="The health measure identifier.")
     geo: GeoType = Field(..., description="The geographic breakdown type.")
     datavaluetypeid: DataValueTypeID = Field(..., description="The data value type identifier.")
-    locationname: Optional[List[str]] = Field(None, description="The name of the location (e.g., county name). Phrase as just the county name (e.g. 'Worcester', not 'Worcester County'). Can be a single string or a list of strings.")
+    locationname: Optional[str|List[str]] = Field(None, description="The name of the location (e.g., county name). Phrase as just the county name (e.g. 'Worcester', not 'Worcester County'). Can be a single string or a list of strings.")
 
     model_config = {
         'extra':'forbid'
