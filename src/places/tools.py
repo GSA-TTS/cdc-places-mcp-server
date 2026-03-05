@@ -12,10 +12,9 @@ def register_tools(mcp):
         Returns:
             dict: API response containing CDC Places data
 
-
-        Example of valid parameters in a query for smoking rates amongst adults in Wayne County in 2020: 
+        Example of valid parameters in a query for smoking rates amongst adults in Wayne County, Michigan, in 2020: 
             {"search_params":{
-                "geo":{"geo_type":"county"},
+                "geo":{"geo_type":"county", "stateabbr":"MI"},
                 "year":"2020",
                 "measureid":{"measure_id":"CSMOKING"},
                 "datavaluetypeid":{"datavaluetype_id":"CrdPrv"}}, 
