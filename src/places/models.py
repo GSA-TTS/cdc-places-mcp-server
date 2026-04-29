@@ -231,6 +231,56 @@ class DataValueTypeID(BaseModel):
         }
         return descriptions[self.datavaluetype_id]
 
+class GeoScopeEnum(str, Enum):
+    COUNTIES_IN_STATE = "counties_in_state"
+    TRACTS_IN_COUNTY = "tracts_in_county"
+    PLACES_IN_STATE = "places_in_state"
+
+class AreaSummaryParams(BaseModel):
+    geo_scope: GeoScopeEnum = Field(..., description="The geographic scope: all counties in a state, all census tracts in a county, or all places in a state.")
+    state: StateCode = Field(..., description="Two-letter state abbreviation.")
+    county: Optional[str] = Field(None, description="County name (required when geo_scope is tracts_in_county). Use just the county name, e.g. 'Worcester'.")
+    year: str = Field(..., description="The year of the data release (e.g., 2024).")
+    measureid: MeasureID = Field(..., description="The health measure identifier.")
+    datavaluetypeid: Optional[DataValueTypeID] = Field(None, description="The data value type. Defaults to AgeAdjPrv for county/places and CrdPrv for census tracts.")
+
+    @field_validator('county')
+    @classmethod
+    def county_required_for_tracts(cls, v, info):
+        if info.data.get('geo_scope') == GeoScopeEnum.TRACTS_IN_COUNTY and not v:
+            raise ValueError("county is required when geo_scope is tracts_in_county")
+        return v
+
+    def get_geo_type(self) -> str:
+        return {
+            GeoScopeEnum.COUNTIES_IN_STATE: "county",
+            GeoScopeEnum.TRACTS_IN_COUNTY: "census",
+            GeoScopeEnum.PLACES_IN_STATE: "places",
+        }[self.geo_scope]
+
+    def get_datavaluetypeid(self) -> str:
+        if self.datavaluetypeid:
+            return self.datavaluetypeid.datavaluetype_id.value
+        return "CrdPrv" if self.geo_scope == GeoScopeEnum.TRACTS_IN_COUNTY else "AgeAdjPrv"
+
+    def to_api_params(self) -> dict:
+        geo = self.get_geo_type()
+        params = {
+            "measureid": self.measureid.measure_id.value,
+            "datavaluetypeid": self.get_datavaluetypeid(),
+            "$limit": 100000,
+        }
+        if geo == "county":
+            params["$where"] = f"stateabbr = '{self.state.value}'"
+            params["$select"] = "locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation"
+        elif geo == "census":
+            params["$where"] = f"stateabbr = '{self.state.value}' AND countyname = '{self.county}'"
+            params["$select"] = "locationname,countyname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation"
+        elif geo == "places":
+            params["$where"] = f"stateabbr = '{self.state.value}'"
+            params["$select"] = "locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation"
+        return params
+
 class PlacesParams(BaseModel):
     year: str = Field(..., description="The year of the data release (e.g., 2024).")
     measureid: MeasureID = Field(..., description="The health measure identifier.")
