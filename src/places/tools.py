@@ -1,5 +1,5 @@
-from places.utils import query_api, get_endpoint
-from places.models import PlacesParams
+from places.utils import query_api, get_endpoint, get_endpoint_for_geo, get_release_for_year, _fetch_api, compute_summary_stats
+from places.models import PlacesParams, AreaSummaryParams
 
 def register_tools(mcp):
 
@@ -24,80 +24,47 @@ def register_tools(mcp):
         # construct the URL for the API query
         url = get_endpoint(search_params)
 
-        # query the API and return the result 
+        # query the API and return the result
         return await query_api(url, search_params)
-    
-    # @mcp.tool()
-    # async def compare_counties_within_state(search_params: PlacesParams) -> str:
-    #     """Compare a measure across all counties within a specified state for a given year. 
-        
-    #     Args:
-    #         search_params (PlacesParams): An instance of PlacesParams containing geo, year, measureid, datavaluetypeid, and loc attributes.
-    #     Returns:
-    #         dict: API response containing CDC Places data
-    #     """
 
-    #     # construct the URL and parameters for the API query
-    #     url, params = set_query_params(
-    #         geo='county',
-    #         year=YEAR,
-    #         measureid=MEASUREID,  
-    #         datavaluetypeid='AgeAdjPrv', # Use Age-adjusted prevalence for comparison
-    #     )
+    @mcp.tool()
+    async def area_summary_stats(search_params: AreaSummaryParams):
+        """Get summary statistics for a health measure across all areas within a geographic scope.
 
-    #     # filter for the state of interest 
-    #     params["$where"] = f"stateabbr = '{STATE}'"
-    #     params["$select"] = 'locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+        Supports three scopes:
+        - counties_in_state: all counties within a state
+        - tracts_in_county: all census tracts within a county (requires county field)
+        - places_in_state: all designated places (cities/CDPs) within a state
 
-    #     data = await query_api(url, params)
+        Returns count, mean, min, Q1, median, Q3, and max. Point statistics (min, median, max)
+        include the corresponding location name.
 
-    #     return data
-    
-    # @mcp.tool()
-    # async def compare_census_tracts_within_county(STATE: str, COUNTY: str, YEAR: str, MEASUREID: str) -> str:
-    #     """Compare a measure across all census tracts within a specified county for a given year. 
-        
-    #     Args:
-            
-            
-    #     """
+        Args:
+            search_params (AreaSummaryParams): Parameters specifying scope, state, measure, and year.
+        Returns:
+            dict: Summary statistics with location attribution for point values.
+        """
+        geo_type = search_params.get_geo_type()
+        release_name = get_release_for_year(search_params.measureid.measure_id.value, search_params.year)
+        if not release_name:
+            return {"error": f"No data release found for measure {search_params.measureid.measure_id.value} in year {search_params.year}"}
 
-    #     # construct the URL and parameters for the API query
-    #     url, params = set_query_params(
-    #         geo='census',
-    #         year=YEAR,
-    #         measureid=MEASUREID,  
-    #         datavaluetypeid='CrdPrv'
-    #     )
+        url = get_endpoint_for_geo(geo_type, release_name)
+        if not url:
+            return {"error": f"No endpoint found for geo type '{geo_type}' and release '{release_name}'"}
 
-    #     # filter for the state of interest 
-    #     params["$where"] = f"stateabbr = '{STATE}' AND countyname = '{COUNTY}'"
-    #     params["$select"] = 'locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
+        records = await _fetch_api(url, search_params.to_api_params())
+        if not records:
+            return {"error": "No data returned from API"}
 
-    #     data = await query_api(url, params)
+        stats = compute_summary_stats(records)
 
-    #     return data
-    
-    # @mcp.tool()
-    # async def compare_places_within_state(STATE: str, YEAR: str, MEASUREID: str) -> str:
-    #     """Compare a measure across all designated places within a specified state for a given year. 
-        
-    #     Args:
-            
-    #     """
-
-    #     # construct the URL and parameters for the API query
-    #     url, params = set_query_params(
-    #         geo='places',
-    #         year=YEAR,
-    #         measureid=MEASUREID,  
-    #         datavaluetypeid='AgeAdjPrv'  # Use Age-adjusted prevalence for comparison
-    #     )
-
-    #     # filter for the state of interest 
-    #     params["$where"] = f"stateabbr = '{STATE}'"
-    #     params["$select"] = 'locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
-
-    #     data = await query_api(url, params)
-
-    #     return data
+        return {
+            "measure": search_params.measureid.measure_id.value,
+            "geo_scope": search_params.geo_scope.value,
+            "state": search_params.state.value,
+            "county": search_params.county,
+            "year": search_params.year,
+            "datavaluetypeid": search_params.get_datavaluetypeid(),
+            "stats": stats,
+        }
