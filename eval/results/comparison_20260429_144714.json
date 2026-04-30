@@ -1,0 +1,81 @@
+{
+  "summary": {
+    "total": 1,
+    "mcp_passed": 1,
+    "baseline_passed": 0,
+    "mcp_pass_rate": 1.0,
+    "baseline_pass_rate": 0.0,
+    "both_passed": 0,
+    "neither_passed": 0,
+    "mcp_only_passed": 1,
+    "baseline_only_passed": 0
+  },
+  "results": [
+    {
+      "mcp": {
+        "question": "What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",
+        "expected_answer": "36.9",
+        "eval_type": "llm_judge",
+        "model_response": "In 2018, 38.1% of adults in Kauai County, Hawaii, had short sleep durations.",
+        "passed": true,
+        "details": {
+          "passed": true,
+          "score": 7,
+          "reasoning": "The actual response provides an answer that is very close to the expected answer, with only a slight discrepancy in the percentage. The expected answer is 36.9%, while the actual response states 38.1%. Although the percentages differ slightly, the response generally captures the key information about the percentage of adults with short sleep durations in Kauai County, Hawaii, in 2018. This small difference could be attributed to data rounding or misreporting. However, it still adequately addresses the question asked.",
+          "details": "SCORE: 7  \nREASONING: The actual response provides an answer that is very close to the expected answer, with only a slight discrepancy in the percentage. The expected answer is 36.9%, while the actual response states 38.1%. Although the percentages differ slightly, the response generally captures the key information about the percentage of adults with short sleep durations in Kauai County, Hawaii, in 2018. This small difference could be attributed to data rounding or misreporting. However, it still adequately addresses the question asked.  \nVERDICT: PASS"
+        },
+        "error": null,
+        "time_to_answer": 6.7828576599713415,
+        "tools_called": [
+          {
+            "tool_name": "get_cdc_places_data",
+            "server_name": "mcp-server",
+            "input": {
+              "search_params": {
+                "year": "2018",
+                "measureid": {
+                  "measure_id": "SLEEP"
+                },
+                "geo": {
+                  "geo_type": "county",
+                  "stateabbr": "HI"
+                },
+                "datavaluetypeid": {
+                  "datavaluetype_id": "AgeAdjPrv"
+                },
+                "locationname": "Kauai"
+              }
+            },
+            "api_response": null
+          }
+        ],
+        "repeat_count": 5,
+        "repeat_pass_count": 5
+      },
+      "baseline": {
+        "question": "What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",
+        "expected_answer": "36.9",
+        "eval_type": "llm_judge",
+        "model_response": "In 2018, approximately 37% of adults in Kauai County, Hawaii, reported having short sleep durations. Short sleep duration is typically defined as sleeping less than 7 hours per night. This statistic is based on data from sources such as the Behavioral Risk Factor Surveillance System (BRFSS).",
+        "passed": false,
+        "details": {
+          "passed": true,
+          "score": 9,
+          "reasoning": "The actual response accurately conveys the key information from the expected answer. It states that approximately 37% of adults in Kauai County, Hawaii, had short sleep durations in 2018, which closely aligns with the expected percentage of 36.9%. Additionally, the response provides context by defining what is meant by short sleep duration and cites the BRFSS as a source of the data, enhancing the credibility and informativeness of the response. The slight rounding difference is negligible and does not affect the overall correctness of the information provided.",
+          "details": "SCORE: 9\n\nREASONING: The actual response accurately conveys the key information from the expected answer. It states that approximately 37% of adults in Kauai County, Hawaii, had short sleep durations in 2018, which closely aligns with the expected percentage of 36.9%. Additionally, the response provides context by defining what is meant by short sleep duration and cites the BRFSS as a source of the data, enhancing the credibility and informativeness of the response. The slight rounding difference is negligible and does not affect the overall correctness of the information provided.\n\nVERDICT: PASS"
+        },
+        "error": null,
+        "time_to_answer": 1.0814081399701536,
+        "tools_called": [],
+        "repeat_count": 5,
+        "repeat_pass_count": 2
+      }
+    }
+  ],
+  "metadata": {
+    "server_url": "https://cdc-places-mcp-server-optimistic-gnu-oc.app.cloud.gov/mcp",
+    "model": "gpt-4o",
+    "provider": "openai",
+    "timestamp": "20260429_144714"
+  }
+}

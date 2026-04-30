@@ -608,16 +608,16 @@ cli = [
 
 [[package]]
 name = "mcp-data-check"
-version = "0.5.0"
+version = "0.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anthropic" },
     { name = "openai" },
     { name = "python-dotenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a4/56/8702dd052e8dc43de84cc529cfadf9bc306d062ee8a391e891588211629f/mcp_data_check-0.5.0.tar.gz", hash = "sha256:5e65ee2c5df2a67a72bccfe1f98e673863d23463122e939e5e0235b740889475", size = 70217, upload-time = "2026-04-29T17:42:06.548Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9b/e3/c99d03f72021330d68261ee7a43ad112cd6da3a4a782597bfd1234b51ff8/mcp_data_check-0.6.1.tar.gz", hash = "sha256:85964be1244ba0823bd8580b6e65b4ecc896c3d3691852ba5bd606d2b30d6962", size = 71093, upload-time = "2026-04-29T18:56:30.105Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dc/c4/16727c2f57e4d3722657f8d7a63069f395e5d2a1d04b800a79a01ecd13ff/mcp_data_check-0.5.0-py3-none-any.whl", hash = "sha256:d0f550505a67d40318b30e3640aca7e4459407bfcfe54798fbefd03acdd4111c", size = 13886, upload-time = "2026-04-29T17:42:05.074Z" },
+    { url = "https://files.pythonhosted.org/packages/03/a4/6cb23f1b36b42ba8ae36c037cd23e0cd59b78302e7992ce96f9cb07ee569/mcp_data_check-0.6.1-py3-none-any.whl", hash = "sha256:b2901a77fd78c970c653e94011c03248af5f17f560c56097c9bbcee8d7a4c642", size = 16306, upload-time = "2026-04-29T18:56:28.634Z" },
 ]
 
 [[package]]

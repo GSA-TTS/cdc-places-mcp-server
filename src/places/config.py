@@ -24,7 +24,7 @@ API_ENDPOINTS = {
         "places_release_2020": "https://data.cdc.gov/resource/fbbf-hgkc.json",
     },
     "places": {
-        "places_release_2024": "https://data.cdc.gov/resource/eav7-hnsx.json",
+        "places_release_2024": "https://data.cdc.gov/resource/sd8v-uq83.json",
         "places_release_2023": "https://data.cdc.gov/resource/krqc-563j.json",
         "places_release_2022": "https://data.cdc.gov/resource/epbn-9bv3.json",
         "places_release_2021": "https://data.cdc.gov/resource/q8ig-wwk9.json",
