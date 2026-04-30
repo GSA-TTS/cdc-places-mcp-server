@@ -1,0 +1,2 @@
+question,expected_answer,eval_type
+"What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",36.9,llm_judge

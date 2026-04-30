@@ -1,0 +1,302 @@
+{
+  "summary": {
+    "total": 1,
+    "mcp_passed": 1,
+    "baseline_passed": 0,
+    "mcp_pass_rate": 1.0,
+    "baseline_pass_rate": 0.0,
+    "both_passed": 0,
+    "neither_passed": 0,
+    "mcp_only_passed": 1,
+    "baseline_only_passed": 0
+  },
+  "results": [
+    {
+      "mcp": {
+        "question": "What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",
+        "expected_answer": "36.9",
+        "eval_type": "llm_judge",
+        "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii, had short sleep durations.",
+        "passed": true,
+        "details": {
+          "passed": true,
+          "score": 10,
+          "reasoning": "The actual response accurately conveys the exact percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The information is presented clearly and matches the expected answer completely in terms of content and numerical accuracy.",
+          "details": "SCORE: 10  \nREASONING: The actual response accurately conveys the exact percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The information is presented clearly and matches the expected answer completely in terms of content and numerical accuracy.  \nVERDICT: PASS"
+        },
+        "error": null,
+        "time_to_answer": 6.936618499970064,
+        "tools_called": [],
+        "repeat_count": 5,
+        "repeat_pass_count": 5,
+        "repeat_results": [
+          {
+            "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii had short sleep durations.",
+            "passed": true,
+            "time_to_answer": 5.668927199905738,
+            "tools_called": [
+              {
+                "tool_name": "get_cdc_places_data",
+                "server_name": "mcp-server",
+                "input": {
+                  "search_params": {
+                    "year": "2018",
+                    "measureid": {
+                      "measure_id": "SLEEP"
+                    },
+                    "geo": {
+                      "geo_type": "county",
+                      "stateabbr": "HI"
+                    },
+                    "datavaluetypeid": {
+                      "datavaluetype_id": "CrdPrv"
+                    },
+                    "locationname": "Kauai"
+                  }
+                },
+                "api_response": null
+              }
+            ],
+            "details": {
+              "passed": true,
+              "score": 10,
+              "reasoning": "The actual response provides the exact percentage of adults with short sleep durations in Kauai County, Hawaii for the year 2018, which is 36.9%. This matches the expected answer exactly and conveys the essential information without any errors or omissions.",
+              "details": "SCORE: 10\nREASONING: The actual response provides the exact percentage of adults with short sleep durations in Kauai County, Hawaii for the year 2018, which is 36.9%. This matches the expected answer exactly and conveys the essential information without any errors or omissions.\nVERDICT: PASS"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii had short sleep durations.",
+            "passed": true,
+            "time_to_answer": 4.345891000004485,
+            "tools_called": [
+              {
+                "tool_name": "get_cdc_places_data",
+                "server_name": "mcp-server",
+                "input": {
+                  "search_params": {
+                    "year": "2018",
+                    "measureid": {
+                      "measure_id": "SLEEP"
+                    },
+                    "geo": {
+                      "geo_type": "county",
+                      "stateabbr": "HI"
+                    },
+                    "datavaluetypeid": {
+                      "datavaluetype_id": "CrdPrv"
+                    },
+                    "locationname": "Kauai"
+                  }
+                },
+                "api_response": null
+              }
+            ],
+            "details": {
+              "passed": true,
+              "score": 10,
+              "reasoning": "The actual response correctly conveys the essential information provided in the expected answer. It states that in 2018, 36.9% of adults in Kauai County, Hawaii had short sleep durations, which aligns perfectly with the expected key point of 36.9%. The response is clear and accurate.",
+              "details": "SCORE: 10  \nREASONING: The actual response correctly conveys the essential information provided in the expected answer. It states that in 2018, 36.9% of adults in Kauai County, Hawaii had short sleep durations, which aligns perfectly with the expected key point of 36.9%. The response is clear and accurate.  \nVERDICT: PASS"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii, had short sleep durations.",
+            "passed": true,
+            "time_to_answer": 9.006347300019115,
+            "tools_called": [
+              {
+                "tool_name": "get_cdc_places_data",
+                "server_name": "mcp-server",
+                "input": {
+                  "search_params": {
+                    "year": "2018",
+                    "measureid": {
+                      "measure_id": "SLEEP"
+                    },
+                    "geo": {
+                      "geo_type": "county"
+                    },
+                    "datavaluetypeid": {
+                      "datavaluetype_id": "CrdPrv"
+                    },
+                    "locationname": "Kauai"
+                  }
+                },
+                "api_response": null
+              }
+            ],
+            "details": {
+              "passed": true,
+              "score": 10,
+              "reasoning": "The actual response conveys the essential information exactly as expected. It states the correct percentage (36.9%) of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The response is concise and accurately reflects the key data point provided in the expected answer.",
+              "details": "SCORE: 10\nREASONING: The actual response conveys the essential information exactly as expected. It states the correct percentage (36.9%) of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The response is concise and accurately reflects the key data point provided in the expected answer.\nVERDICT: PASS"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii, had short sleep durations.",
+            "passed": true,
+            "time_to_answer": 7.185128299985081,
+            "tools_called": [
+              {
+                "tool_name": "get_cdc_places_data",
+                "server_name": "mcp-server",
+                "input": {
+                  "search_params": {
+                    "geo": {
+                      "geo_type": "county",
+                      "stateabbr": "HI"
+                    },
+                    "year": "2018",
+                    "measureid": {
+                      "measure_id": "SLEEP"
+                    },
+                    "datavaluetypeid": {
+                      "datavaluetype_id": "CrdPrv"
+                    },
+                    "locationname": "Kauai"
+                  }
+                },
+                "api_response": null
+              }
+            ],
+            "details": {
+              "passed": true,
+              "score": 10,
+              "reasoning": "The actual response accurately reports the percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018 as 36.9%. It conveys the same essential information as the expected answer without any discrepancies.",
+              "details": "SCORE: 10  \nREASONING: The actual response accurately reports the percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018 as 36.9%. It conveys the same essential information as the expected answer without any discrepancies.  \nVERDICT: PASS"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 36.9% of adults in Kauai County, Hawaii, had short sleep durations.",
+            "passed": true,
+            "time_to_answer": 8.476798699935898,
+            "tools_called": [
+              {
+                "tool_name": "get_cdc_places_data",
+                "server_name": "mcp-server",
+                "input": {
+                  "search_params": {
+                    "year": "2018",
+                    "measureid": {
+                      "measure_id": "SLEEP"
+                    },
+                    "geo": {
+                      "geo_type": "county",
+                      "stateabbr": "HI"
+                    },
+                    "datavaluetypeid": {
+                      "datavaluetype_id": "CrdPrv"
+                    },
+                    "locationname": "Kauai"
+                  }
+                },
+                "api_response": null
+              }
+            ],
+            "details": {
+              "passed": true,
+              "score": 10,
+              "reasoning": "The actual response accurately conveys the exact percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The information is presented clearly and matches the expected answer completely in terms of content and numerical accuracy.",
+              "details": "SCORE: 10  \nREASONING: The actual response accurately conveys the exact percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018. The information is presented clearly and matches the expected answer completely in terms of content and numerical accuracy.  \nVERDICT: PASS"
+            },
+            "error": null
+          }
+        ]
+      },
+      "baseline": {
+        "question": "What percent of adults had short sleep durations in Kauai County Hawaii in 2018?",
+        "expected_answer": "36.9",
+        "eval_type": "llm_judge",
+        "model_response": "In 2018, 35.9% of adults in Kauai County, Hawaii, reported having short sleep durations, which is defined as getting less than 7 hours of sleep per night.",
+        "passed": false,
+        "details": {
+          "passed": false,
+          "score": 5,
+          "reasoning": "The actual response states that 35.9% of adults in Kauai County, Hawaii, had short sleep durations in 2018, whereas the expected answer specifies 36.9%. This represents a discrepancy in the key piece of numeric data, making the actual response inaccurate. The essential information regarding the percentage of adults with short sleep durations is not correctly conveyed.",
+          "details": "SCORE: 5  \nREASONING: The actual response states that 35.9% of adults in Kauai County, Hawaii, had short sleep durations in 2018, whereas the expected answer specifies 36.9%. This represents a discrepancy in the key piece of numeric data, making the actual response inaccurate. The essential information regarding the percentage of adults with short sleep durations is not correctly conveyed.  \nVERDICT: FAIL"
+        },
+        "error": null,
+        "time_to_answer": 1.386291200015694,
+        "tools_called": [],
+        "repeat_count": 5,
+        "repeat_pass_count": 1,
+        "repeat_results": [
+          {
+            "model_response": "In 2018, 38% of adults in Kauai County, Hawaii, were reported to have short sleep durations. This is according to data from the Centers for Disease Control and Prevention (CDC).",
+            "passed": false,
+            "time_to_answer": 1.2833108000922948,
+            "tools_called": [],
+            "details": {
+              "passed": false,
+              "score": 6,
+              "reasoning": "The actual response provides a percentage that is close, but not identical, to the expected figure for short sleep durations among adults in Kauai County in 2018. The expected answer is 36.9%, while the actual response claims 38%. The source cited in the response, the CDC, is plausible for such data points, but the percentage itself is inaccurate compared to the expected value, thus introducing a small error in the information conveyed.",
+              "details": "SCORE: 6\n\nREASONING: The actual response provides a percentage that is close, but not identical, to the expected figure for short sleep durations among adults in Kauai County in 2018. The expected answer is 36.9%, while the actual response claims 38%. The source cited in the response, the CDC, is plausible for such data points, but the percentage itself is inaccurate compared to the expected value, thus introducing a small error in the information conveyed.\n\nVERDICT: FAIL"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, approximately 37.8% of adults in Kauai County, Hawaii, reported short sleep durations, defined as sleeping less than 7 hours per night.",
+            "passed": false,
+            "time_to_answer": 1.244478200096637,
+            "tools_called": [],
+            "details": {
+              "passed": false,
+              "score": 6,
+              "reasoning": "The actual response provides an incorrect percentage (37.8%) compared to the expected answer (36.9%). While the response does correctly identify the concept of short sleep durations and specifies the location and year, the discrepancy in the percentage is significant enough to affect the accuracy of the essential information conveyed.",
+              "details": "SCORE: 6\n\nREASONING: The actual response provides an incorrect percentage (37.8%) compared to the expected answer (36.9%). While the response does correctly identify the concept of short sleep durations and specifies the location and year, the discrepancy in the percentage is significant enough to affect the accuracy of the essential information conveyed.\n\nVERDICT: FAIL"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 38% of adults in Kauai County, Hawaii, reported having short sleep durations, according to data from the Centers for Disease Control and Prevention (CDC). Short sleep duration is defined as sleeping less than 7 hours per night.",
+            "passed": true,
+            "time_to_answer": 1.9515986000187695,
+            "tools_called": [],
+            "details": {
+              "passed": true,
+              "score": 8,
+              "reasoning": "The actual response provides the percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018, which is the primary piece of information that the question seeks. However, the percentage given in the actual response (38%) differs slightly from the expected answer (36.9%). This small discrepancy means that while the response is mostly accurate, it does not perfectly align with the expected data.",
+              "details": "SCORE: 8  \nREASONING: The actual response provides the percentage of adults in Kauai County, Hawaii, who had short sleep durations in 2018, which is the primary piece of information that the question seeks. However, the percentage given in the actual response (38%) differs slightly from the expected answer (36.9%). This small discrepancy means that while the response is mostly accurate, it does not perfectly align with the expected data.  \nVERDICT: PASS"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, approximately 34% of adults in Kauai County, Hawaii reported having short sleep durations, defined as sleeping less than 7 hours per night, according to data from the Centers for Disease Control and Prevention (CDC).",
+            "passed": false,
+            "time_to_answer": 1.1005446999333799,
+            "tools_called": [],
+            "details": {
+              "passed": false,
+              "score": 6,
+              "reasoning": "The response provides a similar context and source for the data (the CDC), but it inaccurately reports the percentage of adults with short sleep durations in Kauai County, Hawaii, as 34% instead of the expected 36.9%. This discrepancy in the percentage is significant enough to potentially mislead readers who are seeking specific statistical information.",
+              "details": "SCORE: 6\n\nREASONING: The response provides a similar context and source for the data (the CDC), but it inaccurately reports the percentage of adults with short sleep durations in Kauai County, Hawaii, as 34% instead of the expected 36.9%. This discrepancy in the percentage is significant enough to potentially mislead readers who are seeking specific statistical information.\n\nVERDICT: FAIL"
+            },
+            "error": null
+          },
+          {
+            "model_response": "In 2018, 35.9% of adults in Kauai County, Hawaii, reported having short sleep durations, which is defined as getting less than 7 hours of sleep per night.",
+            "passed": false,
+            "time_to_answer": 1.3515236999373883,
+            "tools_called": [],
+            "details": {
+              "passed": false,
+              "score": 5,
+              "reasoning": "The actual response states that 35.9% of adults in Kauai County, Hawaii, had short sleep durations in 2018, whereas the expected answer specifies 36.9%. This represents a discrepancy in the key piece of numeric data, making the actual response inaccurate. The essential information regarding the percentage of adults with short sleep durations is not correctly conveyed.",
+              "details": "SCORE: 5  \nREASONING: The actual response states that 35.9% of adults in Kauai County, Hawaii, had short sleep durations in 2018, whereas the expected answer specifies 36.9%. This represents a discrepancy in the key piece of numeric data, making the actual response inaccurate. The essential information regarding the percentage of adults with short sleep durations is not correctly conveyed.  \nVERDICT: FAIL"
+            },
+            "error": null
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "server_url": "https://cdc-places-mcp-server-optimistic-gnu-oc.app.cloud.gov/mcp",
+    "model": "gpt-4o",
+    "provider": "openai",
+    "timestamp": "20260429_145817"
+  }
+}

@@ -314,4 +314,3 @@ class PlacesParams(BaseModel):
             params["$select"] = 'stateabbr,statedesc,locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
 
         return params
-
