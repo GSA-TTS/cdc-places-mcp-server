@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "places"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server for the CDC PLACES dataset"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -19,6 +19,9 @@ dependencies = [
     "pydantic==2.11.7",
     "mcp-data-check>=0.3.0",
 ]
+
+[project.scripts]
+places-mcp = "places.app:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

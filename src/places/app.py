@@ -15,10 +15,14 @@ async def health_check(request):
 
 app = mcp.http_app(stateless_http=True)
 
-if __name__ == "__main__":
+def main():
     port_env = os.environ.get("DATABRICKS_APP_PORT") or os.environ.get("PORT")
     if port_env:
         import uvicorn
         uvicorn.run(app, host="0.0.0.0", port=int(port_env))
     else:
         mcp.run(transport="stdio")
+
+
+if __name__ == "__main__":
+    main()
