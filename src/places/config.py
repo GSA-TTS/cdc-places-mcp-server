@@ -1,6 +1,11 @@
 # API Endpoints 
 DATA_DICTIONARY_ENDPOINT = "https://data.cdc.gov/resource/m35w-spkz.json"
 
+# Local lookup table path (relative to this config file)
+import os
+_CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
+LOOKUP_TABLE_PATH = os.path.join(_CONFIG_DIR, "data", "places_year_measureid_lookup.csv")
+
 API_ENDPOINTS = {
     "county": {
         "places_release_2025": "https://data.cdc.gov/resource/swc5-untb.json",
