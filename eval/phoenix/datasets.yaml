@@ -9,3 +9,11 @@ datasets:
     output_keys:
       - responses
     description: "Dataset for PLACES agent evaluation."
+  
+  places-comparison-0:
+    csv_path: datasets/places-comparison-0/places-comparison-0.csv
+    input_keys:
+      - query
+    output_keys:
+      - responses
+    description: "Dataset for PLACES agent comparison evaluation."
