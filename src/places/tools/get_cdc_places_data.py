@@ -48,7 +48,14 @@ def register(mcp):
         }
         
         if locationname:
-            api_params["locationname"] = locationname
+            if isinstance(locationname, list):
+                # For multiple locations, use caseless_one_of in $where clause
+                # Format: caseless_one_of(`locationname`, "Name1", "Name2", ...)
+                quoted_names = ', '.join(f'"{name}"' for name in locationname)
+                api_params["$where"] = f"caseless_one_of(`locationname`, {quoted_names})"
+            else:
+                # For single location, use simple parameter filter
+                api_params["locationname"] = locationname
         
         # Set parameters based on geography
         if geo == 'county':
