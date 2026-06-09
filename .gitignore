@@ -1,4 +1,22 @@
+ ignore virtual environment
 .venv/
+
+# ignore pycache
 __pycache__/
 
-.env
+# ignore test articats 
+.pytest_cache/
+
+# ignore build artifacts
+dist/
+build/
+*.egg-info/
+.venv/
+venv/
+.databricks/
+
+# ignore opencode files
+.zed/
+docs/SBX_PATTERNS.md
+opencode.jsonc 
+Makefile 
