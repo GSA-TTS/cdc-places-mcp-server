@@ -1,39 +1,59 @@
 import httpx
-import requests
 import statistics
 import pandas as pd
-from places.config import API_ENDPOINTS, DATA_DICTIONARY_ENDPOINT
-from places.models import PlacesParams
+import os
+from places.config import API_ENDPOINTS, LOOKUP_TABLE_PATH
 
 def get_release_for_year(measureid, year):
     """
     Looks up the name of the data release for a given measure ID and year.
     
+    Uses the local CSV lookup table at docs/places_year_measureid_lookup.csv.
+    
     Args:
-        measureid (str): The measure ID to look up.
-        year (int): The desired year of data.
+        measureid (str): The measure ID to look up (e.g., 'CSMOKING').
+        year (str or int): The desired BRFSS year of data (e.g., '2023' or 2023).
     
     Returns:
-        str: The name of the data release for the specified measure ID and year.
+        str: The name of the data release (e.g., 'places_release_2024') or None if not found.
     """
-
-    # get the data dictionary 
-    response = requests.get(DATA_DICTIONARY_ENDPOINT)
-
-    # convert the response to a pandas dataframe
-    dataDict = pd.DataFrame(response.json())
-
-    # get the row matching the measureid
-    if measureid not in dataDict['measureid'].values:
-        print(f"Measure ID {measureid} not found in the data dictionary.")
+    # Convert year to string for comparison
+    year_str = str(year)
+    
+    try:
+        # Read the local lookup table
+        lookup_df = pd.read_csv(LOOKUP_TABLE_PATH)
+        
+        # Find the row matching the measureid
+        if measureid not in lookup_df['MeasureID'].values:
+            print(f"Measure ID {measureid} not found in the lookup table.")
+            return None
+        
+        measure_row = lookup_df[lookup_df['MeasureID'] == measureid].iloc[0]
+        
+        # Search through the PLACES Release columns to find which one contains the year
+        release_columns = [col for col in lookup_df.columns if 'PLACES Release' in col or '500 Cities Release' in col]
+        
+        for col in release_columns:
+            if str(measure_row[col]) == year_str:
+                # Extract the release year from the column name
+                # e.g., "PLACES Release 2024" -> "places_release_2024"
+                if 'PLACES Release' in col:
+                    release_year = col.replace('PLACES Release ', '')
+                    return f"places_release_{release_year}"
+                elif '500 Cities Release' in col:
+                    release_year = col.replace('500 Cities Release ', '')
+                    return f"500cities_release_{release_year}"
+        
+        print(f"No data release found for measure {measureid} with year {year_str}")
         return None
-    row = dataDict[dataDict['measureid'] == measureid]
-
-    # return the column name that matches the year
-    if row.empty:
-        print(f"No data found for measure ID: {measureid}")
+        
+    except FileNotFoundError:
+        print(f"Lookup table not found at: {LOOKUP_TABLE_PATH}")
         return None
-    return row.columns[(row == year).iloc[0]].tolist()[0]
+    except Exception as e:
+        print(f"Error reading lookup table: {e}")
+        return None
 
 def get_endpoint_for_geo(geo, release_name):
     """
@@ -54,20 +74,22 @@ def get_endpoint_for_geo(geo, release_name):
         return None
     return API_ENDPOINTS[geo][release_name]
 
-def get_endpoint(params: PlacesParams):
+def get_endpoint(geo: str, year: str, measureid: str):
     """
-    Retrieves the API endpoint based on the geographic level and year from PlacesParams.
+    Retrieves the API endpoint based on the geographic level, year, and measure ID.
 
     Args:
-        params (PlacesParams): An instance of PlacesParams containing geo and year attributes.
+        geo (str): The geographic level (e.g., 'county', 'state', 'census', 'zcta', 'places').
+        year (str): The year of the data release (e.g., '2020').
+        measureid (str): The measure ID to look up.
 
     Returns:
         str: The API endpoint URL for the specified geographic level and year.
     """
-    release_name = get_release_for_year(params.measureid.measure_id.value, params.year)
+    release_name = get_release_for_year(measureid, year)
     if not release_name:
         return None
-    return get_endpoint_for_geo(params.geo.geo_type.value, release_name)
+    return get_endpoint_for_geo(geo, release_name)
 
 async def _fetch_api(url: str, params: dict):
     async with httpx.AsyncClient() as client:
@@ -78,12 +100,21 @@ async def _fetch_api(url: str, params: dict):
         except Exception:
             return None
 
-async def query_api(url, search_params: PlacesParams):
-    params = search_params.to_api_params()
-    if params is None:
-        params = {}
-    params["$limit"] = 100000
-    return await _fetch_api(url, params)
+async def query_api(url, api_params: dict):
+    """
+    Query the CDC PLACES API with the given URL and parameters.
+    
+    Args:
+        url (str): The API endpoint URL.
+        api_params (dict): Dictionary of API parameters to send with the request.
+    
+    Returns:
+        dict: The JSON response from the API.
+    """
+    if api_params is None:
+        api_params = {}
+    api_params["$limit"] = 100000
+    return await _fetch_api(url, api_params)
 
 def compute_summary_stats(records: list) -> dict:
     valid = []
