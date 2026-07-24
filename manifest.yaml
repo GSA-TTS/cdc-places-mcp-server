@@ -9,5 +9,5 @@ applications:
       PYTHONUNBUFFERED: 1
     routes:
       - route: cdc-places-mcp-server.app.cloud.gov
-    disk_quota: 512M
+    disk_quota: 1G
     memory: 250M
