@@ -10,4 +10,4 @@ applications:
     routes:
       - route: cdc-places-mcp-server.app.cloud.gov
     disk_quota: 1G
-    memory: 250M
+    memory: 125M
