@@ -4,6 +4,11 @@
 # ignore env 
 .env
 
+# ignore IBM deploy/eval secrets + local eval output
+ibm/.env
+ibm/eval.env
+ibm/eval-results/
+
 # ignore pycache
 __pycache__/
 
