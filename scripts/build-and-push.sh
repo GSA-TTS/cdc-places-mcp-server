@@ -24,7 +24,7 @@ REGISTRY="ghcr.io"
 IMAGE="${REGISTRY}/gsa-tts/cdc-places-mcp-server"
 
 # Version tag sourced from pyproject.toml (single source of truth).
-VERSION="$(grep -m1 '^version' pyproject.toml | sed -E 's/version\s*=\s*"([^"]+)"/\1/')"
+VERSION="$(grep -m1 '^version' pyproject.toml | sed -E 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/')"
 if [[ -z "$VERSION" ]]; then
   echo "FATAL: could not read version from pyproject.toml" >&2
   exit 1
