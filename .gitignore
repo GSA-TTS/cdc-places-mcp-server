@@ -16,6 +16,10 @@ ibm/eval.env
 ibm/eval-results/
 ibm/internal/
 
+# ignore generated local-MCP-toolkit staging artifacts (built by register script)
+ibm/local-mcp-toolkit/_stage/
+ibm/local-mcp-toolkit/_toolkit.generated.yaml
+
 # ignore pycache
 __pycache__/
 
