@@ -1,0 +1,32 @@
+# watsonx Orchestrate LOCAL MCP toolkit import config.
+#
+# DO NOT import this file directly. Use the register script:
+#   bash ibm/local-mcp-toolkit/register-toolkit.sh
+#
+# The register script builds a minimal, self-contained staging directory with a
+# FLATTENED layout — `places/` and `server.py` sit directly at package_root (no
+# src/ prefix), plus pyproject.toml — then rewrites `package_root` to point at it
+# before calling `orchestrate toolkits import`. This keeps the upload tiny
+# (~70 KB), avoids the 413 "Request Entity Too Large" from uploading the whole
+# repo, and makes `places` importable at runtime (server.py adds its own dir to
+# sys.path), fixing the ModuleNotFoundError seen with the src/ layout.
+#
+# Orchestrate uploads package_root and runs `command` over stdio inside the
+# Orchestrate runtime. `python server.py` imports `places.app:mcp` and runs it
+# over stdio.
+#
+# The CDC PLACES server needs NO credentials (public CDC data), so no
+# `connections` are declared. If your server needed secrets, you would add a
+# connection (see README) and list it under `connections:`.
+spec_version: v1
+kind: mcp
+name: cdc_places_local
+description: "CDC PLACES health statistics (local stdio MCP): get_cdc_places_data, area_summary_stats"
+command: python server.py
+env: []
+tools:
+  - "*"
+# Placeholder — the register script overwrites this with the staging dir path.
+# If importing manually, set this to the flattened staging folder (places/ +
+# server.py + pyproject.toml), NOT the repo root.
+package_root: ./_stage

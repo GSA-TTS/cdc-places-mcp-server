@@ -1,0 +1,12 @@
+# Dependencies for the LOCAL MCP toolkit.
+#
+# The register script builds a FLATTENED, self-contained staging package_root
+# (places/ + server.py + pyproject.toml) and lets watsonx Orchestrate install it
+# server-side from that pyproject.toml (fastmcp, pandas, requests, ...). This
+# file is therefore NOT used by the normal `register-toolkit.sh` flow and is kept
+# only as a reference of the top-level runtime deps.
+#
+# Pinned to match the repo (see repo-root requirements.txt / pyproject.toml):
+fastmcp==3.4.4
+pandas==3.0.5
+requests==2.34.2
