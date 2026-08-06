@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Deploy an MCP server to IBM Cloud Code Engine.
 #
-# Two deploy paths (selected by ibm/.env):
+# Two deploy paths (selected by ibm/prebuilt-image/.env):
 #
 #   Path A (default) — build from a public Git repo, SERVER-SIDE.
 #     Code Engine clones GIT_REPO_URL and builds its Dockerfile for you. No
@@ -9,7 +9,7 @@
 #     plug-and-play path: point GIT_REPO_URL at your public fork and run.
 #
 #   Path B (override) — deploy a prebuilt public image.
-#     If IMAGE is set in ibm/.env, that image is deployed directly and the Git
+#     If IMAGE is set in ibm/prebuilt-image/.env, that image is deployed directly and the Git
 #     vars are ignored. Use for a pinned, reproducible release.
 #
 # The container serves MCP over streamable-HTTP at :$CE_PORT/mcp with a health
@@ -19,17 +19,17 @@
 #   - IBM Cloud CLI: https://cloud.ibm.com/docs/cli
 #   - Code Engine plugin: `ibmcloud plugin install code-engine`
 #   - Logged in:          `ibmcloud login --sso`
-#   - Config:             `cp ibm/.env.example ibm/.env` && edit && `source ibm/.env`
+#   - Config:             `cp ibm/prebuilt-image/.env.example ibm/prebuilt-image/.env` && edit && `source ibm/prebuilt-image/.env`
 #
 # Usage:
-#   source ibm/.env
-#   bash ibm/deploy-code-engine.sh
+#   source ibm/prebuilt-image/.env
+#   bash ibm/prebuilt-image/deploy-code-engine.sh
 #
 # Idempotent: creates the app on first run, updates it on subsequent runs.
 set -euo pipefail
 
 # --- Validate common config ---------------------------------------------------
-: "${IBMCLOUD_REGION:?set IBMCLOUD_REGION (source ibm/.env)}"
+: "${IBMCLOUD_REGION:?set IBMCLOUD_REGION (source ibm/prebuilt-image/.env)}"
 : "${IBMCLOUD_RESOURCE_GROUP:?set IBMCLOUD_RESOURCE_GROUP}"
 : "${CE_PROJECT:?set CE_PROJECT}"
 : "${CE_APP_NAME:?set CE_APP_NAME}"
@@ -134,4 +134,4 @@ echo "  MCP endpoint: ${APP_URL}/mcp"
 echo "  Health:       ${APP_URL}/health"
 echo ""
 echo "Verify with:"
-echo "  bash ibm/smoke-test.sh ${APP_URL}"
+echo "  bash ibm/prebuilt-image/smoke-test.sh ${APP_URL}"

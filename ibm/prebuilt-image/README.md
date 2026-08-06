@@ -1,17 +1,26 @@
 ---
-title: "IBM Cloud Deployment + watsonx Orchestrate Evaluation"
-description: "Deploy the CDC PLACES MCP server to IBM Code Engine and evaluate it with watsonx Orchestrate"
+title: "IBM Cloud Deployment (Prebuilt Image) + watsonx Orchestrate Evaluation"
+description: "Deploy the CDC PLACES MCP server to IBM Code Engine from a prebuilt public image and evaluate it with watsonx Orchestrate"
 status: draft
 tier: 2
-last_updated: "2026-08-05"
+last_updated: "2026-08-06"
 ---
 
-# IBM Cloud Deployment + watsonx Orchestrate Evaluation
+# IBM Cloud Deployment (Prebuilt Image) + watsonx Orchestrate Evaluation
 
-This runbook takes an MCP server from a **public Git repo** to a running,
-publicly reachable MCP endpoint on **IBM Cloud Code Engine**, then registers it
-as a tool in **watsonx Orchestrate (SaaS)** and runs the gold-standard evaluation
-questions against an agent. The CDC PLACES server is used as the worked example.
+This runbook takes an MCP server to a running, publicly reachable MCP endpoint on
+**IBM Cloud Code Engine**, then registers it as a tool in **watsonx Orchestrate
+(SaaS)** and runs the gold-standard evaluation questions against an agent. The CDC
+PLACES server is used as the worked example.
+
+> **Which kit is this?** This is the **prebuilt-image** deployment kit — it
+> deploys a public container image directly (Path B). It's the path that worked
+> in the original trial account (`itz-watsonx-2`), which lacked the IBM Container
+> Registry authority that server-side Git builds need (see
+> [`../internal/notes.md`](../internal/notes.md)). If your account **does** have
+> Container Registry access, prefer the sibling
+> [`../code-engine-git-build/`](../code-engine-git-build/README.md) kit, which
+> builds from your Git repo server-side (no local Docker, no prebuilt image).
 
 > **Hackathon workflow this fits:** participants build locally → deploy to a cloud
 > environment (here, IBM) → run agent experiments over gold datasets to verify the
@@ -19,18 +28,18 @@ questions against an agent. The CDC PLACES server is used as the worked example.
 
 ## Two ways to deploy
 
-Code Engine can deploy **directly from a Git repo** — it clones your repo and
-builds the Dockerfile server-side, so you need **no local Docker and no image
-registry**. That is the default, plug-and-play path (closest to a cloud.gov
-`cf push` experience). A prebuilt-image path is also supported for pinned
-releases.
+This script supports both a Git-build path and a prebuilt-image path, but in the
+trial account only the **prebuilt-image path (B)** worked — server-side Git
+builds require IBM Container Registry authority the account did not grant. This
+kit therefore documents Path B as the working path; for a first-class
+build-from-Git experience use the sibling `../code-engine-git-build/` kit.
 
 | Path | How | Local Docker? | When |
 |---|---|---|---|
-| **A — Git build (default)** | CE clones `GIT_REPO_URL`, builds its `Dockerfile` | No | Hackathon default: point at your public fork and go |
-| **B — Prebuilt image** | CE deploys `IMAGE` directly | Yes (to build/push it) | Pinned, reproducible release from a public registry |
+| **A — Git build** | CE clones `GIT_REPO_URL`, builds its `Dockerfile` | No | Needs ICR authority — use `../code-engine-git-build/` instead |
+| **B — Prebuilt image** | CE deploys `IMAGE` directly | Yes (to build/push it) | Pinned, reproducible release from a public registry (what worked here) |
 
-You choose the path in `ibm/.env`: leave `IMAGE` empty to use Git build (A);
+You choose the path in `ibm/prebuilt-image/.env`: leave `IMAGE` empty to use Git build (A);
 set `IMAGE` to use the prebuilt image (B).
 
 ## What gets deployed (CDC PLACES example)
@@ -84,19 +93,19 @@ ibmcloud regions              # pick one near you (us-south, us-east, eu-de, ...
 ### 1.3 Configure the deploy env file
 
 ```bash
-cp ibm/.env.example ibm/.env
-# edit ibm/.env:
+cp ibm/prebuilt-image/.env.example ibm/prebuilt-image/.env
+# edit ibm/prebuilt-image/.env:
 #   - IBMCLOUD_REGION / IBMCLOUD_RESOURCE_GROUP: match `ibmcloud regions` /
 #     `ibmcloud resource groups`
 #   - Path A (default): set GIT_REPO_URL to your PUBLIC repo/fork and GIT_BRANCH.
 #     Leave IMAGE empty.
 #   - Path B (prebuilt image): set IMAGE=<public image ref>; Git vars are ignored.
-source ibm/.env
+source ibm/prebuilt-image/.env
 ```
 
-`ibm/.env` holds **no secrets** — only region/project/repo/image coordinates.
+`ibm/prebuilt-image/.env` holds **no secrets** — only region/project/repo/image coordinates.
 Your credentials live in the `ibmcloud login` session, not in the file.
-(`ibm/.env` is git-ignored.)
+(`ibm/prebuilt-image/.env` is git-ignored.)
 
 ---
 
@@ -105,11 +114,11 @@ Your credentials live in the `ibmcloud login` session, not in the file.
 ### 2.1 Run the deploy script
 
 ```bash
-source ibm/.env
-bash ibm/deploy-code-engine.sh
+source ibm/prebuilt-image/.env
+bash ibm/prebuilt-image/deploy-code-engine.sh
 ```
 
-The script is idempotent and picks the path from `ibm/.env`:
+The script is idempotent and picks the path from `ibm/prebuilt-image/.env`:
 
 1. Verifies you're logged in and targets your region + resource group
 2. Creates (or selects) the Code Engine project `CE_PROJECT`
@@ -122,7 +131,7 @@ The script is idempotent and picks the path from `ibm/.env`:
 It sets `--min-scale 1` so one instance stays warm — this avoids a cold-start
 timeout when the Orchestrate agent makes its first tool call mid-evaluation.
 
-> **Path A worked example (this repo):** in `ibm/.env` set
+> **Path A worked example (this repo):** in `ibm/prebuilt-image/.env` set
 > `GIT_REPO_URL=https://github.com/GSA-TTS/cdc-places-mcp-server` and
 > `GIT_BRANCH=feat/ibm-code-engine-deploy`, leave `IMAGE` empty, then run the
 > script. For your own hackathon server, point these at your public fork instead.
@@ -136,7 +145,7 @@ timeout when the Orchestrate agent makes its first tool call mid-evaluation.
 
 ```bash
 # Use the App URL the deploy script printed:
-bash ibm/smoke-test.sh https://<app>.<region>.codeengine.appdomain.cloud
+bash ibm/prebuilt-image/smoke-test.sh https://<app>.<region>.codeengine.appdomain.cloud
 ```
 
 Expected:
@@ -265,14 +274,14 @@ contain. For the first gold row it looks like:
 > exact tool args are hard to predict, you can omit the `tool_call` goal and keep
 > only the `text` goal with keywords, which grades the final answer alone.
 
-Put your test-case files (one per gold question) in a directory, e.g. `ibm/eval/`.
+Put your test-case files (one per gold question) in a directory, e.g. `ibm/prebuilt-image/eval/`.
 
 **A.2 — Provide watsonx credentials.** Create a `.env` for the evaluator with
 your SaaS instance + key (these are read by the evaluator, distinct from the
 `orchestrate env` you activated):
 
 ```bash
-# ibm/eval.env  (git-ignored — do NOT commit)
+# ibm/prebuilt-image/eval.env  (git-ignored — do NOT commit)
 WO_INSTANCE=<YOUR_ORCHESTRATE_INSTANCE_URL>
 WO_API_KEY=<YOUR_ORCHESTRATE_API_KEY>
 ```
@@ -282,12 +291,12 @@ WO_API_KEY=<YOUR_ORCHESTRATE_API_KEY>
 ```bash
 export USE_LEGACY_EVAL=FALSE
 orchestrate evaluations evaluate \
-  --test-paths ./ibm/eval \
-  --output-dir ./ibm/eval-results \
-  --env-file ./ibm/eval.env
+  --test-paths ./ibm/prebuilt-image/eval \
+  --output-dir ./ibm/prebuilt-image/eval-results \
+  --env-file ./ibm/prebuilt-image/eval.env
 ```
 
-Review per-question pass/fail and tool-call traces in `./ibm/eval-results` and in
+Review per-question pass/fail and tool-call traces in `./ibm/prebuilt-image/eval-results` and in
 the Orchestrate UI. Add `-l` (and start the server with Langfuse) if you want the
 scored traces in a Langfuse dashboard.
 
@@ -327,7 +336,7 @@ agent's *reasoning* model to be watsonx-hosted too.)
 ## Teardown
 
 ```bash
-source ibm/.env
+source ibm/prebuilt-image/.env
 ibmcloud ce app delete --name "${CE_APP_NAME}" -f
 # Optionally remove the whole project (deletes all apps in it):
 #   ibmcloud ce project delete --name "${CE_PROJECT}" -f
@@ -343,9 +352,13 @@ orchestrate toolkits remove --name cdc_places
 | File | Purpose |
 |---|---|
 | `.env.example` | Deployment coordinates template (copy to `.env`, no secrets) |
-| `deploy-code-engine.sh` | Idempotent deploy — Git build (default) or prebuilt image |
+| `deploy-code-engine.sh` | Idempotent deploy — Git build or prebuilt image (prebuilt is the working path here) |
 | `smoke-test.sh` | Live `/health` + `/mcp` verification |
 | `README.md` | This runbook |
+
+> For the **build-from-Git** flow (Code Engine builds your repo server-side and
+> pushes to IBM Container Registry), see the sibling
+> [`../code-engine-git-build/`](../code-engine-git-build/README.md) kit.
 
 ## Known gaps / notes
 

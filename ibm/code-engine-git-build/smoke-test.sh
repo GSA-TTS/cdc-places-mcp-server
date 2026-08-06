@@ -6,7 +6,7 @@
 #   2. /mcp answers a JSON-RPC tools/list and advertises the expected tools
 #
 # Usage:
-#   bash ibm/smoke-test.sh https://<app>.<region>.codeengine.appdomain.cloud
+#   bash ibm/code-engine-git-build/smoke-test.sh https://<app>.<region>.codeengine.appdomain.cloud
 set -euo pipefail
 
 BASE_URL="${1:?usage: smoke-test.sh <base-url>}"

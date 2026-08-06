@@ -1,13 +1,20 @@
  ignore virtual environment
 .venv/
 
+# ignore watsonx Orchestrate ADK virtualenv (separate from the server's .venv)
+.venv-wxo/
+ibm/.venv-wxo/
+
 # ignore env 
 .env
 
 # ignore IBM deploy/eval secrets + local eval output
-ibm/.env
+ibm/**/.env
+ibm/**/eval.env
+ibm/**/eval-results/
 ibm/eval.env
 ibm/eval-results/
+ibm/internal/
 
 # ignore pycache
 __pycache__/
