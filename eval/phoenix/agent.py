@@ -14,19 +14,30 @@ load_dotenv()
 
 api_key = os.getenv("USAI_API_KEY")
 base_url = os.getenv("USAI_BASE_URL")
+agent_model = os.getenv("AGENT_MODEL")
+
+# Repo root (two levels up from eval/phoenix) so the MCP server can be launched
+# via `uv run src/usace_iwr_server/app.py` regardless of the current working directory.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 class CDCPlacesAgent:
     """Reusable CDC PLACES Agent for Phoenix experiments"""
     
-    def __init__(self, project_name="cdc-places-agent", phoenix_endpoint="http://localhost:4317", prompt_version="v01"):
-        self.api_key = api_key
-        self.base_url = base_url
-        self.project_name = project_name
-        self.phoenix_endpoint = phoenix_endpoint
-        self.prompt_version = prompt_version
-        self.agent = None
-        self.client = None
-        self._initialized = False
+    def __init__(
+            self,
+            project_name="cdc-places-agent",
+            phoenix_endpoint="http://localhost:4317",
+            prompt_version="v1",
+        ):
+            self.api_key = api_key
+            self.base_url = base_url
+            self.project_name = project_name
+            self.phoenix_endpoint = phoenix_endpoint
+            self.prompt_version = prompt_version
+            self.agent = None
+            self.client = None
+            self._initialized = False
+    
     
     def _load_system_prompt(self) -> str:
         """Load the system prompt from file
@@ -72,15 +83,16 @@ class CDCPlacesAgent:
         print("Initializing MCP client...")
         self.client = MultiServerMCPClient(
             {
-                # "reporter_server": {
-                #     "transport": "stdio",
-                #     "command": "uv",
-                #     "args": ["run", "src/reporter/app.py"],
-                # },
                 "places_server": {
-                    "transport": "http",
-                    "url": "http://localhost:8000/mcp",
-                }
+                    "transport": "stdio",
+                    "command": "uv",
+                    "args": ["run", "src/places/app.py"],
+                    "cwd": REPO_ROOT, 
+                },
+                # "places_server": {
+                #     "transport": "http",
+                #     "url": "http://localhost:8000/mcp",
+                # }
             }
         )
 
@@ -89,7 +101,7 @@ class CDCPlacesAgent:
 
         print("Initializing model...")
         model = ChatOpenAI(
-            model="claude_4_5_sonnet",
+            model=agent_model,
             base_url=self.base_url + "/api/v1",
             api_key=self.api_key,
             temperature=0,
