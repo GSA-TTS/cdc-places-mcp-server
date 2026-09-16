@@ -1,4 +1,4 @@
-from places.utils import get_endpoint_for_geo, get_release_for_year, _fetch_api, compute_summary_stats
+from places.utils import get_endpoint_for_geo, get_release_for_year, _fetch_api, compute_summary_stats, build_citation
 from places.models import MeasureID
 
 from typing import Annotated, Literal, Optional
@@ -93,4 +93,5 @@ def register(mcp):
             "year": year,
             "datavaluetypeid": datavaluetypeid,
             "stats": stats,
+            "citation": build_citation(geo_type, year, measureid.value, url, release_name),
         }
