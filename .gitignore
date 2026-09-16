@@ -1,5 +1,6 @@
  ignore virtual environment
 .venv/
+.venv-linux/
 
 # ignore watsonx Orchestrate ADK virtualenv (separate from the server's .venv)
 .venv-wxo/

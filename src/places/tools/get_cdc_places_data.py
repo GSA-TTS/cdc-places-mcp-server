@@ -1,6 +1,6 @@
 from typing import Annotated, Literal, Optional, List  
 
-from places.utils import query_api, get_endpoint
+from places.utils import query_api, get_endpoint, get_release_for_year, build_citation
 from places.models import MeasureID
 
 
@@ -25,7 +25,7 @@ def register(mcp):
         ] = None
     ):
         """Fetch data from the CDC PLACES API for a given measure, geographic breakdown, and year.
-        
+
         Example of valid parameters in a query for smoking rates amongst adults in Wayne County, Michigan, in 2020: 
             
                 "geo":"county",
@@ -33,6 +33,15 @@ def register(mcp):
                 "measureid":"CSMOKING",
                 "datavaluetypeid":"CrdPrv", 
                 "locationname":"Wayne"
+
+        Returns:
+            dict: On success, an object with two keys:
+                - "data": the list of records returned by the CDC PLACES API.
+                - "citation": a structured citation block describing the data
+                  source (dataset, release year, Socrata dataset ID, source URL,
+                  BRFSS survey year, measure name, methodology link, and access
+                  date). Surface this citation when reporting the data.
+              On failure, an object with a single "error" key.
         """
         
         # Construct the URL for the API query
@@ -40,6 +49,9 @@ def register(mcp):
         
         if not url:
             return {"error": f"Could not determine API endpoint for geo={geo}, year={year}, measureid={measureid.value}"}
+
+        # Resolve the release name so we can build an accurate citation.
+        release_name = get_release_for_year(measureid.value, year)
         
         # Build API parameters
         api_params = {
@@ -60,5 +72,9 @@ def register(mcp):
         elif geo == 'places':
             api_params["$select"] = 'stateabbr,statedesc,locationname,data_value,low_confidence_limit,high_confidence_limit,totalpopulation'
 
-        # Query the API and return the result
-        return await query_api(url, api_params)
+        # Query the API and return the result alongside a citation
+        records = await query_api(url, api_params)
+        return {
+            "data": records,
+            "citation": build_citation(geo, year, measureid.value, url, release_name),
+        }

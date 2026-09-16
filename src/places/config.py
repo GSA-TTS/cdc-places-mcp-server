@@ -1,6 +1,9 @@
 # API Endpoints 
 DATA_DICTIONARY_ENDPOINT = "https://data.cdc.gov/resource/m35w-spkz.json"
 
+# Static reference URL for CDC PLACES methodology / documentation
+PLACES_METHODOLOGY_URL = "https://www.cdc.gov/places/methodology/index.html"
+
 # Local lookup table path (relative to this config file)
 import os
 _CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
