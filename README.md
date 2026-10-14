@@ -88,6 +88,21 @@ uv pip install -r requirements.txt
 
 ## Configuration
 
+### cloud.gov internal deployment
+
+The root `manifest.yaml` maps only `mcp-cdc-places.apps.internal`; it does not
+create a public `app.cloud.gov` route. Deploy it to the same space as the Obot
+gateway, then grant the gateway C2C access on port 8080:
+
+```bash
+cf push
+cf add-network-policy obot mcp-cdc-places --protocol tcp --port 8080
+```
+
+The gateway catalog URL is
+`http://mcp-cdc-places.apps.internal:8080/mcp`. Confirm the app has no public
+route before starting it or registering it with the gateway.
+
 ### Claude Desktop
 
 Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
