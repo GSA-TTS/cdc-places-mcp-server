@@ -1,5 +1,5 @@
 applications:
-  - name: cdc-places-mcp-server
+  - name: mcp-cdc-places
     buildpacks:
         - python_buildpack
     command: PYTHONPATH=src python -m places.app
@@ -8,6 +8,6 @@ applications:
     env:
       PYTHONUNBUFFERED: 1
     routes:
-      - route: cdc-places-mcp-server.app.cloud.gov
+      - route: mcp-cdc-places.apps.internal
     disk_quota: 1G
     memory: 125M
